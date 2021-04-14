@@ -1,11 +1,11 @@
-const router = require('express').Router();
-const { Tag, Product, ProductTag } = require('../../models');
+const router = require("express").Router();
+const { Tag, Product, ProductTag } = require("../../models");
 
 // The `/api/tags` endpoint
 
-router.get('/', (req, res) => {
+router.get("/", (req, res) => {
   try {
-    const tagData = await Tag.findAll({
+    const tagData = Tag.findAll({
       include: [
         {
           model: Product,
@@ -18,9 +18,9 @@ router.get('/', (req, res) => {
   }
 });
 
-router.get('/:id', (req, res) => {
+router.get("/:id", (req, res) => {
   try {
-    const tagData = await Tag.findByPk(req.params.id, {
+    const tagData = Tag.findByPk(req.params.id, {
       include: [
         {
           model: Product,
@@ -35,9 +35,9 @@ router.get('/:id', (req, res) => {
   // be sure to include its associated Product data
 });
 
-router.post('/', (req, res) => {
+router.post("/", (req, res) => {
   try {
-    const tagData = await Tag.create({
+    const tagData = Tag.create({
       tag_name: req.body.tag_name,
     });
     res.status(200).json(tagData);
@@ -47,11 +47,11 @@ router.post('/', (req, res) => {
   // create a new tag
 });
 
-router.put('/:id', (req, res) => {
+router.put("/:id", (req, res) => {
   try {
     console.log(req.body.tag_name);
     console.log(req.params.id);
-    const tagData = await Tag.update(
+    const tagData = Tag.update(
       {
         tag_name: req.body.tag_name,
       },
@@ -64,17 +64,15 @@ router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
 });
 
-router.delete('/:id', (req, res) => {
+router.delete("/:id", (req, res) => {
   try {
-    const tagData = await Tag.destroy({
+    const tagData = Tag.destroy({
       where: {
         id: parseInt(req.params.id),
       },
     });
     if (!tagData) {
-      res
-        .status(404)
-        .json({ message: `Unknown tag ID: ${req.params.id}` });
+      res.status(404).json({ message: `Unknown tag ID: ${req.params.id}` });
     }
     res.status(200).json(tagData);
   } catch (err) {
